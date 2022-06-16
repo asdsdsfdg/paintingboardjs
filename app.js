@@ -5,7 +5,7 @@ const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
 
 const INITIAL_COLOR = "#2c2c2c";
-const CANVAS_SIZE = 600;
+const CANVAS_SIZE = 600; //반복해서 사용하게 되는 값은 실수 방지를 위해 변수를 따로 정의해준다.
 
 canvas.width = CANVAS_SIZE;
 canvas.height = CANVAS_SIZE;
