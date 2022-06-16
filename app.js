@@ -3,6 +3,7 @@ const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
+const saveBtn = document.getElementById("jsSave");
 
 const INITIAL_COLOR = "#2c2c2c";
 const CANVAS_SIZE = 600; //반복해서 사용하게 되는 값은 실수 방지를 위해 변수를 따로 정의해준다.
@@ -10,6 +11,9 @@ const CANVAS_SIZE = 600; //반복해서 사용하게 되는 값은 실수 방지
 canvas.width = CANVAS_SIZE;
 canvas.height = CANVAS_SIZE;
 
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE); //먼저 fillstyle를 하얀색으로 해준 뒤 fillRect로 canvassize만큼을 하얀색으로 채워줌
+//이 과정을 안하면 이미지 저장시에 배경색을 넣지 않으면 누끼가 따지기 때문
 ctx.strokeStyle = INITIAL_COLOR;
 ctx.fillStyle = INITIAL_COLOR;
 ctx.lineWidth = 2.5; //브러쉬 굵기 초기값
@@ -65,6 +69,19 @@ function handleModeClick() {
   }
 }
 
+function handleCM(event) {
+  //캔버스에 우클릭 방지하는 함수
+  event.preventDefault(); //이벤트 발생을 중지시킴
+}
+
+function handleSaveClick() {
+  const image = canvas.toDataURL(); //캔버스의 데이타를 이미지로 저장
+  const link = document.createElement("a"); //<a>태그 생성
+  link.href = image;
+  link.download = "PaintJS[🎨]"; //<a> 태그의 attribute중 하나로 href는 브라우저에게 랭크로 이동하라고 하지만 down는 url를 다운하라고 지시함
+  link.click();
+}
+
 if (canvas) {
   //if 구문으로 조건을 확실히 해주는 습관을 들이자
   canvas.addEventListener("mousemove", onMouseMove);
@@ -72,6 +89,7 @@ if (canvas) {
   canvas.addEventListener("mouseup", stopPainting);
   canvas.addEventListener("mouseleave", stopPainting);
   canvas.addEventListener("click", handleCanvasClick);
+  canvas.addEventListener("contextmenu", handleCM); //contextmenu는 우클릭할때 나타나는 목록을 말함
 }
 
 Array.from(colors).forEach((color) =>
@@ -85,4 +103,8 @@ if (range) {
 
 if (mode) {
   mode.addEventListener("click", handleModeClick);
+}
+
+if (saveBtn) {
+  saveBtn.addEventListener("click", handleSaveClick);
 }
